@@ -38,7 +38,6 @@ public class TravelRepositoryImpl implements TravelRepository{
 
 	@Override
 	public Travel update(Travel travel) {
-		// TODO Auto-generated method stub
 		String sql = "UPDATE tb_travel set title=?, time=NOW() where id=?";
 		jdbcTemplate.update(sql, travel.getTitle(), travel.getId());
 		String querySql = "select * from tb_travel where id = ?";
@@ -47,10 +46,11 @@ public class TravelRepositoryImpl implements TravelRepository{
 
 	@Override
 	public Travel delete(String id) {
-		// TODO Auto-generated method stub
+		String querySql = "select * from tb_travel where id = ?";
+		Travel travel = jdbcTemplate.queryForObject(querySql, new TravelMapper(), id);
 		String sql = "DELETE FROM tb_travel WHERE id=?";
 		jdbcTemplate.update(sql, id);
-		return null;
+		return travel;
 	}
 
 	@Override
