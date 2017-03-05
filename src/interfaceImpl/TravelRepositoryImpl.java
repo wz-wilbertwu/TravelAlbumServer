@@ -3,6 +3,7 @@ package interfaceImpl;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
@@ -38,12 +39,17 @@ public class TravelRepositoryImpl implements TravelRepository{
 	@Override
 	public Travel update(Travel travel) {
 		// TODO Auto-generated method stub
-		return null;
+		String sql = "UPDATE tb_travel set title=?, time=NOW() where id=?";
+		jdbcTemplate.update(sql, travel.getTitle(), travel.getId());
+		String querySql = "select * from tb_travel where id = ?";
+		return jdbcTemplate.queryForObject(querySql, new TravelMapper(), travel.getId());
 	}
 
 	@Override
-	public Travel delete(Travel travel) {
+	public Travel delete(String id) {
 		// TODO Auto-generated method stub
+		String sql = "DELETE FROM tb_travel WHERE id=?";
+		jdbcTemplate.update(sql, id);
 		return null;
 	}
 
@@ -51,6 +57,12 @@ public class TravelRepositoryImpl implements TravelRepository{
 	public Travel query(String id) {
 		String sql = "select * from tb_travel where id = ?";
 		return jdbcTemplate.queryForObject(sql, new TravelMapper(), id);
+	}
+	
+	@Override
+	public List<Travel> queryAll(String usr_id) {
+		String sql = "select * from tb_travel where user_id = ?";
+		return jdbcTemplate.query(sql, new Object[]{usr_id}, new TravelMapper());
 	}
 
 }
