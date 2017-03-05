@@ -1,5 +1,7 @@
 package interfaceImpl;
 
+import java.util.UUID;
+
 import javax.sql.DataSource;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
@@ -10,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 import custome_interface.UserRepository;
 import model.User;
+import model.UserMapper;
 import testTool.MyTool;
 @Component
 public class UserRepositoryImpl implements UserRepository{
 	private JdbcTemplate jdbcTemplate;
-	
 	public UserRepositoryImpl() {
 	  BasicDataSource dataSource = new BasicDataSource();
 	  dataSource.setDriverClassName("com.mysql.jdbc.Driver");
@@ -25,9 +27,10 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 	@Override
 	public User add(User user) {
+		user.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		String sql = "INSERT INTO tb_user(id,name,password)VALUES(?,?,?)";
-		jdbcTemplate.update(sql, "16", user.getName(), user.getPassword());
-		return null;
+		jdbcTemplate.update(sql, user.getId(), user.getName(), user.getPassword());
+		return user;
 	}
 
 	@Override
@@ -43,8 +46,8 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	public User query() {
-		// TODO Auto-generated method stub
-		return null;
+	public User query(String userId) {
+		String sql = "SELECT * FROM tb_user WHERE ID=?";
+		return jdbcTemplate.queryForObject(sql, new UserMapper(), userId);
 	}
 	}

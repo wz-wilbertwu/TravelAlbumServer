@@ -6,5 +6,5 @@ public interface UserRepository {
 	User add(User user);
 	User update();
 	User delete();
-	User query();
+	User query(String userId);
 }

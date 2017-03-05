@@ -8,36 +8,38 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import custome_interface.TravelRepository;
 import custome_interface.UserRepository;
+import model.Travel;
 import model.User;
 
 @Controller
-@RequestMapping("/User")
-public class UserController {
-	private UserRepository userRepository;
+@RequestMapping("/Travel")
+public class TravelController {
+	private TravelRepository travelRepository;
 	@Autowired
-	public UserController(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public TravelController(TravelRepository travelRepository) {
+		this.travelRepository = travelRepository;
 	}
-	@RequestMapping(value="/register", method=RequestMethod.GET)
+	
+	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public String showRegisterForm() {
-		return "registerForm";
+		return "addTravelForm";
 	}
-	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public @ResponseBody User processRegistration(
-		      @Valid User user, 
+	@RequestMapping(value="/add", method=RequestMethod.POST)
+	public @ResponseBody Travel processRegistration(
+		      @Valid Travel travel, 
 		      Errors errors) {
 		    /*if (errors.hasErrors()) {
 		      return "registerForm";
 		    }*/
-			return userRepository.add(user);
+			return travelRepository.add(travel);
 		  }
 	
-	@RequestMapping(value="/{userId}", method=RequestMethod.GET)
-	public @ResponseBody User showUser(@PathVariable("userId") String userId){
-		return userRepository.query(userId);
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public @ResponseBody Travel showUser(@PathVariable("id") String id){
+		return travelRepository.query(id);
 	}
 }
