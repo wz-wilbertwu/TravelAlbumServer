@@ -3,7 +3,10 @@ package interfaceImpl;
 import java.util.List;
 import java.util.UUID;
 
+import javax.sql.DataSource;
+
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +18,10 @@ import model.TravelMapper;
 @Component
 public class TravelItemRepositoryImpl implements TravelItemRepository{
 	private JdbcTemplate jdbcTemplate;
+	
+	/*public TravelItemRepositoryImpl(DataSource dataSource) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+	}*/
 	public TravelItemRepositoryImpl() {
 	  BasicDataSource dataSource = new BasicDataSource();
 	  dataSource.setDriverClassName("com.mysql.jdbc.Driver");
