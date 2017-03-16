@@ -40,4 +40,17 @@ public class UserController {
 	public @ResponseBody User showUser(@PathVariable("userId") String userId){
 		return userRepository.query(userId);
 	}
+	@RequestMapping(value="/login", method=RequestMethod.GET)
+	public String showLoginForm() {
+		return "registerForm";
+	}
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public @ResponseBody User processLogin(
+		      @Valid User user, 
+		      Errors errors) {
+		    /*if (errors.hasErrors()) {
+		      return "registerForm";
+		    }*/
+			return userRepository.login(user);
+		  }
 }

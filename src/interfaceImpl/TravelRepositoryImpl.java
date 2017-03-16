@@ -26,22 +26,26 @@ public class TravelRepositoryImpl implements TravelRepository{
 		}
 	@Override
 	public Travel add(Travel travel) {
-		travel.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		/*travel.setId(UUID.randomUUID().toString().replaceAll("-", ""));*/
 		String sql = "INSERT INTO tb_travel "
 				+ "(id,user_id,title,time) "
-				+ "VALUES(?,?,?,NOW())";
+				+ "VALUES(?,?,?,?)";
 		jdbcTemplate.update(sql, travel.getId(), travel.getUserId(), 
-				travel.getTitle());
+				travel.getTitle(),travel.getTime());
 		String querySql = "select * from tb_travel where id = ?";
-		return jdbcTemplate.queryForObject(querySql, new TravelMapper(), travel.getId());
+		Travel travel2 = jdbcTemplate.queryForObject(querySql, new TravelMapper(), travel.getId());
+		travel2.setStatus("succ");
+		return travel2;
 	}
 
 	@Override
 	public Travel update(Travel travel) {
-		String sql = "UPDATE tb_travel set title=?, time=NOW() where id=?";
-		jdbcTemplate.update(sql, travel.getTitle(), travel.getId());
+		String sql = "UPDATE tb_travel set title=?, time=? where id=?";
+		jdbcTemplate.update(sql, travel.getTitle(), travel.getTime(), travel.getId());
 		String querySql = "select * from tb_travel where id = ?";
-		return jdbcTemplate.queryForObject(querySql, new TravelMapper(), travel.getId());
+		Travel travel2 = jdbcTemplate.queryForObject(querySql, new TravelMapper(), travel.getId());
+		travel2.setStatus("succ");
+		return travel2;
 	}
 
 	@Override
@@ -50,13 +54,16 @@ public class TravelRepositoryImpl implements TravelRepository{
 		Travel travel = jdbcTemplate.queryForObject(querySql, new TravelMapper(), id);
 		String sql = "DELETE FROM tb_travel WHERE id=?";
 		jdbcTemplate.update(sql, id);
+		travel.setStatus("succ");
 		return travel;
 	}
 
 	@Override
 	public Travel query(String id) {
 		String sql = "select * from tb_travel where id = ?";
-		return jdbcTemplate.queryForObject(sql, new TravelMapper(), id);
+		Travel travel = jdbcTemplate.queryForObject(sql, new TravelMapper(), id);
+		travel.setStatus("succ");
+		return travel;
 	}
 	
 	@Override

@@ -11,6 +11,7 @@
    	id: <input type="text" name="id" /><br/>
       user_id: <input type="text" name="userId" /><br/>
       title: <input type="text" name="title" /><br/>
+      time: <input type="text" name="time" /><br/>
       <input type="submit" value="update" />
     </form>
   </body>

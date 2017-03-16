@@ -1,5 +1,6 @@
 package interfaceImpl;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.sql.DataSource;
@@ -27,9 +28,17 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 	@Override
 	public User add(User user) {
+		String querySql = "select * from tb_user where name = ?";
+		List result = jdbcTemplate.query(querySql, new Object[]{user.getName()},
+								new UserMapper());
+		if (!result.isEmpty()) {
+			user.setStatus("fail");
+			return user;
+		}
 		user.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		String sql = "INSERT INTO tb_user(id,name,password)VALUES(?,?,?)";
 		jdbcTemplate.update(sql, user.getId(), user.getName(), user.getPassword());
+		user.setStatus("succ");
 		return user;
 	}
 
@@ -49,5 +58,18 @@ public class UserRepositoryImpl implements UserRepository{
 	public User query(String userId) {
 		String sql = "SELECT * FROM tb_user WHERE ID=?";
 		return jdbcTemplate.queryForObject(sql, new UserMapper(), userId);
+	}
+	@Override
+	public User login(User user) {
+		String sql = "SELECT * FROM tb_user WHERE NAME=? AND PASSWORD=?";
+		User result = jdbcTemplate.queryForObject(sql, new UserMapper(),
+				user.getName(), user.getPassword());
+		if (result == null) {
+			result = new User();
+			result.setStatus("fail");
+		} else {
+			result.setStatus("succ");
+		}
+		return result;
 	}
 	}

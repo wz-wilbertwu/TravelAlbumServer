@@ -5,6 +5,7 @@ public class Travel {
     public String userId;
     public String title;
     public String time;
+    public String status;
     
     public Travel () {
 		
@@ -40,5 +41,13 @@ public class Travel {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
