@@ -61,6 +61,7 @@ public class TravelItemRepositoryImpl implements TravelItemRepository{
 		TravelItem travelItem = jdbcTemplate.queryForObject(querySql, new TravelItemMapper(), id);
 		String sql = "DELETE FROM tb_travel_item WHERE id=?";
 		jdbcTemplate.update(sql, id);
+		travelItem.setStatus("succ");
 		return travelItem;
 	}
 
