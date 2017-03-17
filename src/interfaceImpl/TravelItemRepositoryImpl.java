@@ -32,14 +32,18 @@ public class TravelItemRepositoryImpl implements TravelItemRepository{
 	}
 	@Override
 	public TravelItem add(TravelItem travelItem) {
-		travelItem.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		if (travelItem.getId() == null || travelItem.getId().equals("")) {
+			travelItem.setId(UUID.randomUUID().toString().replaceAll("-", ""));	
+		}
 		String sql = "INSERT INTO tb_travel_item "
 				+ "(id,travel_id,description,image,time) "
-				+ "VALUES(?,?,?,?,NOW())";
+				+ "VALUES(?,?,?,?,?)";
 		jdbcTemplate.update(sql, travelItem.getId(), travelItem.getTravel_id(), 
-				travelItem.getDescription(), travelItem.getImage());
+				travelItem.getDescription(), travelItem.getImage(),travelItem.getTime());
 		String querySql = "select * from tb_travel_item where id = ?";
-		return jdbcTemplate.queryForObject(querySql, new TravelItemMapper(), travelItem.getId());
+		TravelItem travelItem2 = jdbcTemplate.queryForObject(querySql, new TravelItemMapper(), travelItem.getId());
+		travelItem2.setStatus("succ");
+		return travelItem2;
 	}
 
 	@Override

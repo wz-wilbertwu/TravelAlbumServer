@@ -9,6 +9,7 @@ public class TravelItem {
     private String description;
     private String image;
     private String time;
+    private String status;
     public TravelItem() {
     }
 	public String getId() {
@@ -40,5 +41,11 @@ public class TravelItem {
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
