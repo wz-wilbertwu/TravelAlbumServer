@@ -3,9 +3,18 @@ package controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -109,5 +118,31 @@ public class FileUploadController {
 			}
 		}
 		return message;
+	}
+	
+	
+	@RequestMapping(value = "/download", method = { RequestMethod.GET, RequestMethod.POST })
+	public ResponseEntity<byte[]> download(@RequestParam(name = "fileName") String fileName,
+	        HttpServletRequest request) {
+	    HttpHeaders headers = new HttpHeaders();
+	    Pattern pattern = Pattern.compile("\\w*\\.\\w+");
+	    Matcher matcher = pattern.matcher(fileName);
+	     
+	    //检查文件名中非法字符，只允许是字母、数字和下划线
+	    if (matcher.matches()) {
+	        try {
+	            headers.setContentDispositionFormData("myfile", fileName);
+	            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	            // 获取物理路径
+	            String rootPath = System.getProperty("catalina.home");
+	            String filePath = rootPath + File.separator + "tmpFiles";
+	            File pic = new File(filePath, fileName);
+	            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(pic), headers, HttpStatus.CREATED);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	     
+	    return null;
 	}
 }
