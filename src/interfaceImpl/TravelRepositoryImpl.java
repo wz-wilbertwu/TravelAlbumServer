@@ -35,6 +35,7 @@ public class TravelRepositoryImpl implements TravelRepository{
 		String querySql = "select * from tb_travel where id = ?";
 		Travel travel2 = jdbcTemplate.queryForObject(querySql, new TravelMapper(), travel.getId());
 		travel2.setStatus("succ");
+		travel2.setOperation("A");
 		return travel2;
 	}
 
@@ -45,6 +46,7 @@ public class TravelRepositoryImpl implements TravelRepository{
 		String querySql = "select * from tb_travel where id = ?";
 		Travel travel2 = jdbcTemplate.queryForObject(querySql, new TravelMapper(), travel.getId());
 		travel2.setStatus("succ");
+		travel2.setOperation("U");
 		return travel2;
 	}
 
@@ -55,6 +57,7 @@ public class TravelRepositoryImpl implements TravelRepository{
 		String sql = "DELETE FROM tb_travel WHERE id=?";
 		jdbcTemplate.update(sql, id);
 		travel.setStatus("succ");
+		travel.setOperation("D");
 		return travel;
 	}
 
@@ -63,13 +66,17 @@ public class TravelRepositoryImpl implements TravelRepository{
 		String sql = "select * from tb_travel where id = ?";
 		Travel travel = jdbcTemplate.queryForObject(sql, new TravelMapper(), id);
 		travel.setStatus("succ");
+		travel.setOperation("R");
 		return travel;
 	}
 	
 	@Override
 	public List<Travel> queryAll(String usr_id) {
 		String sql = "select * from tb_travel where user_id = ?";
-		return jdbcTemplate.query(sql, new Object[]{usr_id}, new TravelMapper());
+		List<Travel>  travels = jdbcTemplate.query(sql, new Object[]{usr_id}, new TravelMapper());
+		for(Travel travel:travels) {
+			travel.setOperation("R");
+		}
+		return travels;
 	}
-
 }

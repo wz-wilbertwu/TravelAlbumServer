@@ -6,8 +6,17 @@ public class Travel {
     public String title;
     public String time;
     public String status;
+    public String operation;
     
-    public Travel () {
+    public String getOperation() {
+		return operation;
+	}
+
+	public void setOperation(String operation) {
+		this.operation = operation;
+	}
+
+	public Travel () {
 		
 	}
 
