@@ -15,10 +15,11 @@
         </servlet-class>
         <load-on-startup>1</load-on-startup>
         
-        <!-- 设置自己定义的控制器xml文件 -->  
+        <!-- <!-- 设置自己定义的控制器xml文件 -->  
         <init-param>  
             <param-name>contextConfigLocation</param-name>  
             <param-value>/WEB-INF/beans.xml</param-value>  
-        </init-param>  
+        </init-param>   -->
+        
     </servlet>
 </web-app>

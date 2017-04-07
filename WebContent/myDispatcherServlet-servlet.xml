@@ -24,4 +24,10 @@
         class="interfaceImpl.TravelItemRepositoryImpl">  
         <property name="datasource" ref="datasource" />  
     </bean>  -->  
+     <filter>
+         <filter-name>springSecurityFilterChain</filter-name>
+         <filter-class>
+             org.springframework.web.filter.DelegatingFilterProxy
+         </filter-class>
+     </filter>
 </beans>

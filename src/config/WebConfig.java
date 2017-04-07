@@ -1,5 +1,6 @@
 package config;
 
+import javax.servlet.Filter;
 import javax.servlet.annotation.MultipartConfig;
 import javax.sql.DataSource;
 
@@ -8,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -18,7 +21,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"controller", "custome_interface", "interfaceImpl"})
+@ComponentScan(basePackages = {"controller", "custome_interface", "interfaceImpl", "config"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	  @Bean
 	  public ViewResolver viewResolver() {
