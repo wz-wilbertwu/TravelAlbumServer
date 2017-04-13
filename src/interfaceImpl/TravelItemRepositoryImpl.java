@@ -8,6 +8,8 @@ import javax.sql.DataSource;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import custome_interface.TravelItemRepository;
@@ -32,6 +34,10 @@ public class TravelItemRepositoryImpl implements TravelItemRepository{
 	}
 	@Override
 	public TravelItem add(TravelItem travelItem) {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+			    .getAuthentication()
+			    .getPrincipal();
+		System.out.println(userDetails.toString());	        
 		if (travelItem.getId() == null || travelItem.getId().equals("")) {
 			travelItem.setId(UUID.randomUUID().toString().replaceAll("-", ""));	
 		}

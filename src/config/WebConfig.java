@@ -10,6 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -18,9 +20,15 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import controller.UserController;
+import custome_interface.UserRepository;
+import interfaceImpl.UserRepositoryImpl;
+
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 @Configuration
 @EnableWebMvc
+@EnableWebMvcSecurity
 @ComponentScan(basePackages = {"controller", "custome_interface", "interfaceImpl", "config"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	  @Bean
@@ -40,7 +48,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		  dataSource.setPassword("password");
 		  return dataSource;
 	  }
-	  
+	  @Bean
+	  public UserController userController() {
+		  return new UserController(
+				  new UserRepositoryImpl(dataSource()));
+	  }
 	  
 	  @Override
 	  public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

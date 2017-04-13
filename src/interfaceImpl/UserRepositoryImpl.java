@@ -15,17 +15,20 @@ import custome_interface.UserRepository;
 import model.User;
 import model.UserMapper;
 import testTool.MyTool;
-@Component
+
 public class UserRepositoryImpl implements UserRepository{
 	private JdbcTemplate jdbcTemplate;
-	public UserRepositoryImpl() {
+	public UserRepositoryImpl(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	/*public UserRepositoryImpl() {
 	  BasicDataSource dataSource = new BasicDataSource();
 	  dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 	  dataSource.setUrl("jdbc:mysql://localhost:3306/db_develop?serverTimezone=UTC");
 	  dataSource.setUsername("root");
 	  dataSource.setPassword("password");
 	  this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
+	}*/
 	@Override
 	public User add(User user) {
 		String querySql = "select * from tb_user where name = ?";

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import custome_interface.UserRepository;
 import model.User;
 
-@Controller
 @RequestMapping("/User")
 public class UserController {
 	private UserRepository userRepository;
